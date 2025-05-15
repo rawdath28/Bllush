@@ -1,0 +1,150 @@
+/**
+ * Firebase Firestore Data Models
+ * 
+ * This file contains TypeScript-like definitions of the data structures
+ * used in Firestore for the BuddyApp.
+ */
+
+/**
+ * User Profile Schema
+ * 
+ * Collection: 'users'
+ * Document ID: generated user ID
+ */
+export const UserProfileModel = {
+  id: '',              // User ID (document ID)
+  name: '',            // User's name
+  age: 0,              // User's age
+  gender: '',          // User's gender
+  preferences: {       // Dating preferences
+    genderPreference: '', // Preferred gender to match with
+    ageMin: 18,        // Minimum age preference
+    ageMax: 99,        // Maximum age preference
+    interests: [],     // Array of interest categories
+    importantValues: [], // Values important to the user
+    dealBreakers: [],  // Deal breakers in a relationship
+    relationshipGoals: '', // What kind of relationship they're looking for
+  },
+  lifestyle: {         // Lifestyle information
+    drinking: '',      // Drinking habits
+    smoking: '',       // Smoking habits
+    exercise: '',      // Exercise frequency
+    diet: '',          // Dietary preferences
+    pets: [],          // Pet preferences
+    religion: '',      // Religious beliefs/practices
+    politicalViews: '', // Political alignment
+  },
+  location: {          // Location data
+    latitude: 0,
+    longitude: 0,
+    city: '',
+    country: '',
+    neighborhood: '',
+  },
+  education: {         // Education background
+    level: '',         // Highest level of education
+    school: '',        // School name
+    fieldOfStudy: '',  // Field of study
+  },
+  work: {              // Work information
+    profession: '',    // Current profession
+    company: '',       // Company/employer
+    industry: '',      // Industry
+  },
+  bio: '',             // User bio/description
+  profileImageUrl: '', // URL to profile image
+  photoUrls: [],       // Additional photo URLs
+  languages: [],       // Languages spoken
+  socialMediaLinks: {}, // Social media profile links
+  createdAt: null,     // Timestamp when profile was created
+  lastActive: null,    // Timestamp of last activity
+};
+
+/**
+ * Response Types for questions that users answer
+ */
+export const ResponseTypes = {
+  TRUEFALSE: 'truefalse',
+  MULTIPLECHOICE: 'multiplechoice',
+  SLIDER: 'slider',
+  AUDIO: 'audio',
+  FILEPICKER: 'filepicker',
+};
+
+/**
+ * User Responses Schema
+ * 
+ * Collection: 'users/{userId}/responses'
+ * Document ID: responseId
+ */
+export const UserResponseModel = {
+  id: '',              // Response ID
+  userId: '',          // User ID who provided this response
+  type: '',            // Response type (from ResponseTypes)
+  question: '',        // The question text
+  tag: '',             // Question category/tag
+  
+  // Type-specific response data, only one of these will be present
+  trueFalseData: {
+    answer: null,      // true or false
+  },
+  multipleChoiceData: {
+    options: [],       // Array of option objects {id, text}
+    selectedOptionId: '', // ID of selected option
+  },
+  sliderData: {
+    minEmoji: '',      // Emoji for minimum value
+    maxEmoji: '',      // Emoji for maximum value
+    value: 0,          // Selected value (0-100)
+  },
+  audioData: {
+    audioUrl: '',      // URL to stored audio file
+    duration: 0,       // Duration in seconds
+  },
+  filePickerData: {
+    imageUrl: '',      // URL to stored image file
+  },
+  
+  createdAt: null,     // Timestamp when response was created
+  updatedAt: null,     // Timestamp when response was last updated
+};
+
+/**
+ * User Validations Schema
+ * 
+ * Collection: 'validations'
+ * Document ID: generated validation ID
+ * 
+ * Tracks when one user validates (approves/rejects) another user's responses
+ */
+export const ValidationModel = {
+  id: '',              // Validation ID
+  validatorUserId: '', // ID of user who is validating
+  targetUserId: '',    // ID of user whose responses are being validated
+  responseId: '',      // ID of the response being validated
+  isValidated: null,   // true = approved, false = rejected, null = not decided
+  createdAt: null,     // Timestamp when validation was created
+  updatedAt: null,     // Timestamp when validation was last updated
+};
+
+/**
+ * Match Schema
+ * 
+ * Collection: 'matches'
+ * Document ID: generated match ID
+ * 
+ * Created when two users match based on mutual validations
+ */
+export const MatchModel = {
+  id: '',              // Match ID
+  users: [],           // Array of user IDs in this match
+  validatedResponsesCount: 0, // Number of responses that were mutually validated
+  isActive: true,      // Whether the match is still active
+  createdAt: null,     // Timestamp when match was created
+  lastInteractionAt: null, // Timestamp of last interaction between matched users
+  
+  // AI Analysis results
+  aiCompatibilityScore: 0, // Compatibility score from AI (0-100)
+  aiCompatibilityInsight: '', // Text insight generated by AI
+  aiAnalysisTimestamp: null, // When the AI analysis was performed
+}; 

@@ -1,3 +1,57 @@
+# BuddyApp
+
+A React Native application built with Expo.
+
+## Prerequisites
+
+- Node.js (v14 or newer)
+- npm or yarn
+- Expo CLI (`npm install -g expo-cli`)
+- Expo Go app on your mobile device (for testing)
+
+## Installation
+
+1. Clone the repository
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+## Running the App
+
+1. Start the development server:
+```bash
+npm start
+# or
+yarn start
+```
+
+2. Scan the QR code with your mobile device using the Expo Go app (Android) or Camera app (iOS)
+
+## Features
+
+- Beautiful and modern UI design
+- Responsive layout
+- Cross-platform compatibility (iOS and Android)
+- TypeScript support
+- Safe area handling
+- Custom components
+
+## Project Structure
+
+```
+buddyapp/
+├── src/
+│   └── screens/
+│       └── QuestionScreen.tsx
+├── App.tsx
+├── package.json
+├── tsconfig.json
+└── README.md
+```
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
