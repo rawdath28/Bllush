@@ -65,41 +65,41 @@ const questions: Question[] = [
   {
     id: 1,
     type: 'truefalse',
-    tag: 'Social Media',
-    text: 'Do you prefer meaningful conversations over social media interactions?',
+    tag: 'Voyages',
+    text: 'Les auberges de jeunesse?',
     options: [
-      { id: 'false', text: 'Faux' },
-      { id: 'true', text: 'Vrai' },
+      { id: 'false', text: 'Contre' },
+      { id: 'true', text: 'Pour' },
     ],
   },
   {
     id: 2,
     type: 'multiple',
-    tag: 'Life Goals',
-    text: 'What are you looking for in a relationship?',
+    tag: 'Tchatcheur',
+    text: 'Un surnom que tu  donnerais à ton/ta crush.',
     options: [
       { 
         id: 'fun', 
-        text: 'Casual & Fun',
-        description: 'Looking for something relaxed without pressure'
+        text: 'Bébé',
+        description: ''
       },
       { 
         id: 'serious', 
-        text: 'Serious Relationship',
-        description: 'Ready for something meaningful and committed'
+        text: 'Mon coeur',
+        description: ''
       },
       { 
         id: 'friends', 
-        text: 'Friends First',
-        description: 'Building a strong friendship before anything else'
+        text: 'Ma libellule',
+        description: ''
       },
     ],
   },
   {
     id: 3,
     type: 'slider',
-    tag: 'Preferences',
-    text: 'How much do you like to plan versus going with the flow?',
+    tag: 'Habitudes',
+    text: 'Garder ses chaussettes dans le lit ?',
     minEmoji: '🥶',
     maxEmoji: '🥵',
     minValue: 0,
@@ -108,15 +108,15 @@ const questions: Question[] = [
   {
     id: 4,
     type: 'audio',
-    tag: 'Voice',
-    text: 'Describe what you are looking for in a partner',
+    tag: 'En 15 secondes',
+    text: 'Joue la citation de ton film préféré.',
     maxDuration: 15, // 15 seconds max
   },
   {
     id: 5,
     type: 'photo',
-    tag: 'Visual',
-    text: 'Add a photo that represents your personality',
+    tag: 'En une image',
+    text: 'Ton plus gros green flag ?',
   },
 ];
 
@@ -743,6 +743,7 @@ const styles = StyleSheet.create({
     padding: 28,
     marginHorizontal: 8,
     height: 88,
+    marginTop: 200,
   },
   selectedAnswer: {
     backgroundColor: '#FFC629',
@@ -826,7 +827,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 'auto',
+    marginTop: 100,
     padding: 32,
   },
   slider: {
@@ -863,7 +864,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 'auto',
+    marginTop: 100,
     padding: 32,
   },
   timerText: {
@@ -916,7 +917,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 'auto',
+    marginTop: 150,
     padding: 22,
   },
   photoButtonContainer: {

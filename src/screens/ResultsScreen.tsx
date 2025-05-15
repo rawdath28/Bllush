@@ -109,12 +109,12 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({
         <View style={styles.matchContent}>
           <View style={styles.profileImages}>
             <Image
-                source={currentUserProfileImage ? { uri: currentUserProfileImage } : require('../assets/images/boy.png')}
+                source={currentUserProfileImage ? { uri: currentUserProfileImage } : require('../assets/images/quentin.png')}
               style={[styles.profileImage, { zIndex: 1, left: 20, top: 20, transform: [{ rotate: '-15deg' }] }]}
               resizeMode="cover"
             />
             <Image
-                source={matchedUserProfileImage ? { uri: matchedUserProfileImage } : require('../assets/images/girl.png')}
+                source={matchedUserProfileImage ? { uri: matchedUserProfileImage } : require('../assets/images/mel.png')}
               style={[styles.profileImage, { zIndex: 2, right: 20, top: 20, transform: [{ rotate: '15deg' }] }]}
               resizeMode="cover"
             />
@@ -130,10 +130,10 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({
           <View style={styles.matchTextContainer}>
             <Text style={styles.matchTitle}>C'est un match !</Text>
             <Text style={styles.matchSubtitle}>
-                Vous avez validé {validatedCount} questions en commun.
+            Vous vous êtes trouvés au bon moment.
             </Text>
 
-              {loading ? (
+              {/* {loading ? (
                 <ActivityIndicator size="large" color="#FFC629" style={styles.loader} />
               ) : (
                 <View style={styles.analysisContainer}>
@@ -147,7 +147,7 @@ const ResultsScreen: React.FC<ResultsScreenProps> = ({
                     <Text style={styles.insightText}>{aiAnalysis.compatibilityInsight}</Text>
                   </View>
                 </View>
-              )}
+              )} */}
             </View>
           </View>
 

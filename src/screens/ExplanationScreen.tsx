@@ -153,7 +153,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    width: 370,
+    width: 300,
     alignSelf: 'center',
     marginTop: 100,
   },

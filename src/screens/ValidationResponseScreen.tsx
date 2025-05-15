@@ -35,7 +35,7 @@ type BaseResponse = {
 
 type TrueFalseResponse = BaseResponse & {
   type: 'truefalse';
-  otherUserAnswer: 'Vrai' | 'Faux';
+  otherUserAnswer: 'Pour' | 'Contre';
 };
 
 type MultipleChoiceResponse = BaseResponse & {
@@ -71,39 +71,39 @@ type ResponseData = TrueFalseResponse | MultipleChoiceResponse | SliderResponse 
 const responseData: ResponseData[] = [
   {
     id: 1,
-    tag: 'Tagbis',
-    question: 'Le rem ipsum dolor sit amet, consectetur vulputate libero et velit ?',
+    tag: 'Voyages',
+    question: 'Les auberges de jeunesse?',
     type: 'truefalse',
-    otherUserAnswer: 'Vrai', // True
+    otherUserAnswer: 'Pour', // True
     validated: null,
   },
   {
     id: 2,
-    tag: 'Tagbis',
-    question: 'Le rem ipsum dolor sit amet, consectetur vulputate libero et velit ?',
+    tag: 'Tchatcheur',
+    question: 'Un surnom que tu  donnerais à ton/ta crush.',
     type: 'multiplechoice',
     options: [
-      { id: 'option1', text: 'Le rem ipsum dolor sit amet' },
-      { id: 'option2', text: 'Casual & Fun' },
-      { id: 'option3', text: 'Friends First' },
+      { id: 'option1', text: 'Bébé' },
+      { id: 'option2', text: 'Mon coeur' },
+      { id: 'option3', text: 'Ma libellule' },
     ],
-    selectedOptionId: 'option1',
+    selectedOptionId: 'option3',
     validated: null,
   },
   {
     id: 3,
-    tag: 'Personality',
-    question: 'How much do you like to plan versus going with the flow?',
+    tag: 'Habitudes',
+    question: 'Garder ses chaussettes dans le lit?',
     type: 'slider',
     minEmoji: '🥶', // Cold/Planning
     maxEmoji: '🥵', // Hot/Spontaneous
-    value: 75, // 0-100 where 100 is max
+    value: 2, // 0-100 where 100 is max
     validated: null,
   },
   {
     id: 4,
-    tag: 'Audio Response',
-    question: 'Le rem ipsum dolor sit amet, consectetur vulputate libero et velit ?',
+    tag: 'En 15 secondes',
+    question: 'Joue le citation de ton film préféré.',
     type: 'audio',
     // Use a local audio file
     audioUri: require('../assets/audio/sample.mp3'),
@@ -112,10 +112,10 @@ const responseData: ResponseData[] = [
   },
   {
     id: 5,
-    tag: 'Photo',
-    question: 'Le rem ipsum dolor sit amet, consectetur vulputate libero et velit ?',
+    tag: 'En une photo',
+    question: 'Ton plus gros green flag ?',
     type: 'filepicker',
-    imageUri: require('../assets/images/file_picker_image.jpg'),
+    imageUri: require('../assets/images/img_mel.png'),
     validated: null,
   }
 ];
@@ -533,7 +533,7 @@ const ValidationResponseScreen: React.FC<ValidationResponseScreenProps> = ({ onB
                 <View style={styles.responseIconContainer}>
                   <Feather name="heart" size={24} color="#0B1009" />
                 </View>
-                <Text style={styles.responseText}>Vrai</Text>
+                <Text style={styles.responseText}>Pour</Text>
               </View>
             </View>
           ) : currentResponse.type === 'multiplechoice' ? (
@@ -592,7 +592,8 @@ const ValidationResponseScreen: React.FC<ValidationResponseScreenProps> = ({ onB
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#101009',
+    backgroundColor: 'black',
+    height: 1000,
   },
   header: {
     flexDirection: 'row',
@@ -676,11 +677,14 @@ const styles = StyleSheet.create({
   responseContentContainer: {
     flex: 1,
     justifyContent: 'center',
+    width: '100%',
+    height: 500,
   },
   responseOptions: {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
+    marginTop: 150,
   },
   responseButton: {
     flexDirection: 'row',
@@ -712,7 +716,7 @@ const styles = StyleSheet.create({
   multipleChoiceContainer: {
     flex: 1,
     justifyContent: 'center',
-    marginBottom: 100,
+    marginTop: 150,
   },
   multipleChoiceSelectedOption: {
     flexDirection: 'row',
@@ -774,7 +778,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 32,
     alignItems: 'center',
-    marginTop: 20,
+    marginTop: 80,
   },
   sliderTrack: {
     width: '100%',
@@ -798,9 +802,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 32,
     paddingHorizontal: 12,
-    marginTop: 0,
     alignItems: 'center',
     width: '100%',
+    marginTop: 50,
   },
   timerContainer: {
     width: '100%',
@@ -891,7 +895,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     overflow: 'hidden',
     borderRadius: 12,
-    height: 235,
+    height: 250,
     width: '100%',
     shadowColor: '#000',
     shadowOffset: {

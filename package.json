@@ -27,7 +27,8 @@
     "react-native-svg": "^13.14.1",
     "react-native-svg-transformer": "^1.5.1",
     "react-native-web": "~0.19.6",
-    "@expo/metro-runtime": "~5.0.4"
+    "@expo/metro-runtime": "~5.0.4",
+    "expo-updates": "~0.28.13"
   },
   "overrides": {
     "metro": "0.76.7",

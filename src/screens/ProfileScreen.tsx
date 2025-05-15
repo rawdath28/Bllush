@@ -49,7 +49,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack, userId }) => {
           {/* Profile Image */}
           <View style={styles.profileImageContainer}>
             <Image
-              source={require('../assets/images/girl.png')}
+              source={require('../assets/images/img_mel.png')}
               style={styles.profileImage}
               resizeMode="cover"
             />
@@ -57,7 +57,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack, userId }) => {
 
           {/* User Info */}
           <View style={styles.userInfoContainer}>
-            <Text style={styles.userName}>Sophie, 24</Text>
+            <Text style={styles.userName}>Melissa, 24</Text>
             <Text style={styles.userLocation}>Paris, France</Text>
           </View>
 
@@ -87,6 +87,9 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ onBack, userId }) => {
               </View>
               <View style={styles.interestTag}>
                 <Text style={styles.interestTagText}>Art</Text>
+              </View>
+              <View style={styles.interestTag}>
+                <Text style={styles.interestTagText}>Marketing digital</Text>
               </View>
             </View>
           </View>

@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "cd3fa73c-7dfc-4aac-81e0-38a472cf94d4"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/cd3fa73c-7dfc-4aac-81e0-38a472cf94d4"
+    },
+    "android": {
+      "package": "com.rawdath28.buddyapp"
+    },
+    "ios": {}
+  }
+}

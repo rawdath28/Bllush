@@ -45,6 +45,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F0E5',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 200,
+    width: '100%',
+    height: '100%',
   },
   iconContainer: {
     width: 80,
