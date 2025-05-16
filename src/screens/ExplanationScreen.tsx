@@ -82,6 +82,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    // padding: 10,
   },
   header: {
     flexDirection: 'row',
@@ -114,8 +115,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   stepNumberContainer: {
-    width: 78,
-    height: 78,
+    width: 67,
+    height: 67,
     borderRadius: 39,
     backgroundColor: '#FFC629',
     justifyContent: 'center',
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
   },
   stepNumber: {
     fontFamily: Platform.OS === 'ios' ? 'Marker Felt' : 'sans-serif',
-    fontSize: 36,
+    fontSize: 30,
     fontWeight: '700',
     color: '#000000',
   },

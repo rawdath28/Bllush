@@ -19,7 +19,7 @@ type ValidationScreenProps = {
 
 const ValidationScreen: React.FC<ValidationScreenProps> = ({ 
   onDiscoverResponses,
-  userName = 'Alexandra',
+  userName = 'Melissa',
   onBack,
   onValidate
 }) => {
@@ -57,7 +57,7 @@ const ValidationScreen: React.FC<ValidationScreenProps> = ({
           {/* Text Content */}
           <View style={styles.textContainer}>
             <Text style={styles.mainTitle}>
-              Découvre ce que {userName} à répondu
+              Découvre ce que {userName} à répondue
             </Text>
             <Text style={styles.subtitle}>
               Alors, tu valides ?
@@ -83,14 +83,17 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     width: '100%',
     height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 80,
   },
   backgroundContainer: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    alignItems: 'center',
+    // position: 'absolute',
+    // top: 0,
+    // left: 0,
+    // right: 0,
+    // bottom: 0,
+    // alignItems: 'center',
   },
   backgroundRectangle: {
     width: '100%',
@@ -105,6 +108,8 @@ const styles = StyleSheet.create({
     gap: 52,
   },
   avatarContainer: {
+    marginTop: 200, 
+
     width: 313,
     justifyContent: 'center',
     alignItems: 'center',
@@ -151,7 +156,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 20,
-    marginBottom: 300,
+    marginBottom: 0,
   },
   actionButtonText: {
     fontFamily: Platform.OS === 'ios' ? 'Inter' : 'sans-serif',

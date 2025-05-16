@@ -106,14 +106,14 @@ const responseData: ResponseData[] = [
     question: 'Joue le citation de ton film préféré.',
     type: 'audio',
     // Use a local audio file
-    audioUri: require('../assets/audio/sample.mp3'),
+    audioUri: require('../assets/audio/vocal_mel.mp3'),
     duration: 15, // 15 seconds
     validated: null,
   },
   {
     id: 5,
     tag: 'En une photo',
-    question: 'Ton plus gros green flag ?',
+    question: 'Ton plus gros green flag?',
     type: 'filepicker',
     imageUri: require('../assets/images/img_mel.png'),
     validated: null,
@@ -128,8 +128,25 @@ const AudioPlayer = ({ audioUri, duration }: { audioUri: any, duration: number }
   const [sound, setSound] = useState<Audio.Sound | null>(null);
   const [position, setPosition] = useState(0);
   const [positionTimer, setPositionTimer] = useState<NodeJS.Timeout | null>(null);
+  
+  // Use refs for more stable state access in async operations
   const soundRef = useRef<Audio.Sound | null>(null);
+  const isPlayingRef = useRef(false);
+  const positionTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Update refs when state changes
+  useEffect(() => {
+    soundRef.current = sound;
+  }, [sound]);
+
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
+
+  useEffect(() => {
+    positionTimerRef.current = positionTimer;
+  }, [positionTimer]);
+  
   // For debugging
   useEffect(() => {
     console.log("Position updated:", position);
@@ -140,116 +157,153 @@ const AudioPlayer = ({ audioUri, duration }: { audioUri: any, duration: number }
     return Array.from({ length: 40 }).map(() => 2 + Math.random() * 20);
   }, []);
   
-  // Clean up resources when component unmounts
+  // Load sound when component mounts
   useEffect(() => {
-    return () => {
-      if (sound) {
-        sound.unloadAsync();
-      }
-      if (positionTimer) {
-        clearInterval(positionTimer);
-      }
-    };
-  }, [sound, positionTimer]);
-
-  // Update sound reference
-  useEffect(() => {
-    soundRef.current = sound;
-  }, [sound]);
-  
-  // Real audio playback functionality
-  const handlePlayPress = async () => {
-    if (isPlaying && sound) {
-      // Just pause the audio but keep the sound object
+    let isMounted = true;
+    
+    const loadSound = async () => {
       try {
-        await sound.pauseAsync();
-        setIsPlaying(false);
-      } catch (err) {
-        console.error('Error pausing audio:', err);
-      }
-      
-      if (positionTimer) {
-        clearInterval(positionTimer);
-        setPositionTimer(null);
-      }
-      return;
-    }
-    
-    setIsLoading(true);
-    setError(null); // Reset any previous errors
-    
-    try {
-      if (sound) {
-        // Resume playback with the existing sound object
-        console.log("Resuming audio playback");
-        await sound.playAsync();
-        setIsPlaying(true);
-      } else {
-        // First-time loading
-        console.log("Loading audio from local file");
+        setIsLoading(true);
+        console.log("Loading audio file initially");
         
-        // Load and play the sound - handles both URLs and local require'd files
+        // Load the sound but don't play yet
         const { sound: newSound } = await Audio.Sound.createAsync(
           audioUri,
-          { shouldPlay: true },
+          { shouldPlay: false },
           (status) => {
+            if (!isMounted) return;
+            
             if (status.isLoaded) {
               if (!status.isPlaying && status.didJustFinish) {
                 setIsPlaying(false);
+                isPlayingRef.current = false;
                 setPosition(0);
-                if (positionTimer) {
-                  clearInterval(positionTimer);
+                if (positionTimerRef.current) {
+                  clearInterval(positionTimerRef.current);
                   setPositionTimer(null);
                 }
               }
             } else if (!status.isLoaded && status.error) {
-              // Handle the error case when loading fails
               console.error('Playback error:', status.error);
               setError(`Playback error: ${status.error}`);
-              setIsPlaying(false);
             }
           }
         );
         
-        setSound(newSound);
-        soundRef.current = newSound;
-        setIsPlaying(true);
+        if (isMounted) {
+          setSound(newSound);
+          soundRef.current = newSound;
+          setIsLoading(false);
+        } else {
+          // If component unmounted during load, unload the sound
+          newSound.unloadAsync();
+        }
+      } catch (err) {
+        console.error('Audio loading error:', err);
+        if (isMounted) {
+          setError('Error loading audio file');
+          setIsLoading(false);
+        }
       }
+    };
+    
+    loadSound();
+    
+    // Clean up function
+    return () => {
+      isMounted = false;
+      if (soundRef.current) {
+        soundRef.current.unloadAsync();
+      }
+      if (positionTimerRef.current) {
+        clearInterval(positionTimerRef.current);
+      }
+    };
+  }, [audioUri]);
+  
+  // Start/stop position tracking timer
+  const startPositionTimer = () => {
+    if (positionTimerRef.current) {
+      clearInterval(positionTimerRef.current);
+    }
+    
+    const timer = setInterval(async () => {
+      if (!soundRef.current || !isPlayingRef.current) return;
       
-      // Start position tracking timer only if not already running
-      if (!positionTimer) {
-        // Update position more frequently for smoother timer
-        const timer = setInterval(async () => {
-          const currentSound = soundRef.current;
-          if (currentSound) {
-            try {
-              const status = await currentSound.getStatusAsync();
-              if (status.isLoaded) {
-                // Update position in seconds
-                const currentPosition = status.positionMillis / 1000;
-                console.log("Current position:", currentPosition);
-                setPosition(currentPosition);
-                
-                // If we've reached the end, stop the timer
-                if (status.durationMillis !== undefined && status.positionMillis >= status.durationMillis) {
-                  clearInterval(timer);
-                  setPositionTimer(null);
-                }
-              }
-            } catch (timerErr) {
-              console.log('Timer error:', timerErr);
-            }
+      try {
+        const status = await soundRef.current.getStatusAsync();
+        if (status.isLoaded) {
+          const currentPosition = status.positionMillis / 1000;
+          setPosition(currentPosition);
+          
+          if (status.didJustFinish) {
+            setIsPlaying(false);
+            isPlayingRef.current = false;
+            clearInterval(timer);
+            setPositionTimer(null);
+            setPosition(0);
           }
-        }, 250); // Update 4 times per second for smoother updates
-        
-        setPositionTimer(timer);
+        }
+      } catch (error) {
+        console.error('Timer error:', error);
       }
-    } catch (err) {
+    }, 250);
+    
+    setPositionTimer(timer);
+    positionTimerRef.current = timer;
+  };
+  
+  const stopPositionTimer = () => {
+    if (positionTimerRef.current) {
+      clearInterval(positionTimerRef.current);
+      setPositionTimer(null);
+      positionTimerRef.current = null;
+    }
+  };
+  
+  // Real audio playback functionality
+  const handlePlayPress = async () => {
+    if (!soundRef.current) {
+      setError("Audio not loaded yet. Please wait a moment and try again.");
+      return;
+    }
+    
+    try {
+      if (isPlayingRef.current) {
+        // Pause playback
+        console.log("Pausing audio");
+        await soundRef.current.pauseAsync();
+        setIsPlaying(false);
+        isPlayingRef.current = false;
+        stopPositionTimer();
+      } else {
+        // Play or resume
+        console.log("Playing/resuming audio");
+        const status = await soundRef.current.getStatusAsync();
+        await soundRef.current.playAsync();
+        setIsPlaying(true);
+        isPlayingRef.current = true;
+        startPositionTimer();
+      }
+    } catch (err: any) {
       console.error('Audio playback error:', err);
-      setError('Error playing audio. Please check the file format.');
-      setIsPlaying(false);
-    } finally {
-      setIsLoading(false);
+      setError(`Playback error: ${err.message || 'Unknown error'}`);
+      
+      // Try to recover by reloading the sound
+      if (soundRef.current) {
+        try {
+          await soundRef.current.unloadAsync();
+          const { sound: newSound } = await Audio.Sound.createAsync(
+            audioUri,
+            { shouldPlay: false }
+          );
+          setSound(newSound);
+          soundRef.current = newSound;
+          setError("Please try playing again");
+        } catch (reloadErr) {
+          setError("Could not reload audio. Please try again later.");
+        }
+      }
     }
   };
   
@@ -264,7 +318,7 @@ const AudioPlayer = ({ audioUri, duration }: { audioUri: any, duration: number }
     <View style={styles.audioContainer}>
       <View style={styles.timerContainer}>
         <Text style={styles.timerText}>
-          {isPlaying ? `${formatTime(position)} / ${formatTime(duration)}` : `0:00 / ${formatTime(duration)}`}
+          {formatTime(position)} / {formatTime(duration)}
         </Text>
       </View>
       
@@ -333,25 +387,6 @@ const FilePicker = ({ imageUri }: { imageUri: number }) => {
           resizeMode="cover"
         />
       </View>
-      
-      {/* This would be included in a real implementation */}
-      {/* <View style={styles.filePickerActions}>
-        <TouchableOpacity 
-          style={styles.filePickerButton}
-          onPress={handleTakePhoto}
-        >
-          <Feather name="camera" size={20} color="#0B1009" />
-          <Text style={styles.filePickerButtonText}>Take Photo</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity 
-          style={styles.filePickerButton}
-          onPress={handlePickFromGallery}
-        >
-          <Feather name="image" size={20} color="#0B1009" />
-          <Text style={styles.filePickerButtonText}>Gallery</Text>
-        </TouchableOpacity>
-      </View> */}
     </View>
   );
 };
@@ -531,7 +566,7 @@ const ValidationResponseScreen: React.FC<ValidationResponseScreenProps> = ({ onB
               {/* True Button - Only showing this as it's the selected one in Figma */}
               <View style={styles.responseButton}>
                 <View style={styles.responseIconContainer}>
-                  <Feather name="heart" size={24} color="#0B1009" />
+                  <Feather name="heart" size={20} color="#0B1009" />
                 </View>
                 <Text style={styles.responseText}>Pour</Text>
               </View>
@@ -684,7 +719,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
-    marginTop: 150,
+    marginTop: 120,
   },
   responseButton: {
     flexDirection: 'row',
@@ -716,7 +751,7 @@ const styles = StyleSheet.create({
   multipleChoiceContainer: {
     flex: 1,
     justifyContent: 'center',
-    marginTop: 150,
+    marginTop: 170,
   },
   multipleChoiceSelectedOption: {
     flexDirection: 'row',
@@ -778,7 +813,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     padding: 32,
     alignItems: 'center',
-    marginTop: 80,
+    marginTop: 100,
   },
   sliderTrack: {
     width: '100%',
@@ -804,7 +839,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     alignItems: 'center',
     width: '100%',
-    marginTop: 50,
+    marginTop: 90,
   },
   timerContainer: {
     width: '100%',

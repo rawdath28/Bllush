@@ -42,16 +42,15 @@ const LoadingAnimation = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F0E5',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 200,
-    width: '100%',
-    height: '100%',
   },
   iconContainer: {
     width: 80,
     height: 80,
+    marginTop: 0,
     backgroundColor: '#FEFBF4',
     borderRadius: 40,
     justifyContent: 'center',

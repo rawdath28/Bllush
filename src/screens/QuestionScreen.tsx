@@ -401,22 +401,28 @@ const QuestionScreen = ({ onBack, onComplete }: QuestionScreenProps) => {
           ]}
           onPress={() => handleAnswerSelect(option.id)}
         >
-          <View style={[
-            styles.radioButton,
-            selectedAnswer === option.id && styles.selectedRadioButton,
-          ]}>
-            {option.id === 'false' ? (
-              <Feather name="x" size={18} color="#0B1009" />
-            ) : (
-              <Feather name="heart" size={18} color="#0B1009" />
-            )}
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <View style={[
+              styles.radioButton,
+              selectedAnswer === option.id && styles.selectedRadioButton,
+            ]}>
+              {option.id === 'false' ? (
+                <Feather name="x" size={18} color="#0B1009" />
+              ) : (
+                <Feather name="heart" size={18} color="#0B1009" />
+              )}
+            </View>
+            <Text style={[
+              styles.answerText,
+              selectedAnswer === option.id && styles.selectedAnswerText,
+            ]}>
+              {option.text}
+            </Text>
           </View>
-          <Text style={[
-            styles.answerText,
-            selectedAnswer === option.id && styles.selectedAnswerText,
-          ]}>
-            {option.text}
-          </Text>
         </TouchableOpacity>
       ))}
     </View>
@@ -436,27 +442,25 @@ const QuestionScreen = ({ onBack, onComplete }: QuestionScreenProps) => {
           ]}
           onPress={() => handleAnswerSelect(option.id)}
         >
-          <View style={styles.multipleChoiceContent}>
+          <View style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            width: '100%',
+            paddingLeft: 10,
+          }}>
+            <View style={[
+              styles.radioButton,
+              selectedAnswer === option.id && styles.selectedRadioButton,
+            ]}>
+              <Feather name="heart" size={18} color="#0B1009" />
+            </View>
             <Text style={[
-              styles.multipleChoiceTitle,
-              selectedAnswer === option.id && styles.selectedMultipleChoiceText,
+              styles.answerText,
+              selectedAnswer === option.id && styles.selectedAnswerText,
             ]}>
               {option.text}
             </Text>
-            <Text style={[
-              styles.multipleChoiceDescription,
-              selectedAnswer === option.id && styles.selectedMultipleChoiceText,
-            ]}>
-              {option.description}
-            </Text>
-          </View>
-          <View style={[
-            styles.multipleChoiceCheck,
-            selectedAnswer === option.id && styles.selectedMultipleChoiceCheck,
-          ]}>
-            {selectedAnswer === option.id && (
-              <Ionicons name="heart" size={24} color="#0B1009" />
-            )}
           </View>
         </TouchableOpacity>
       ))}
@@ -523,7 +527,7 @@ const QuestionScreen = ({ onBack, onComplete }: QuestionScreenProps) => {
             style={[styles.recordButton, styles.recordingActive]}
             onPress={handleStopRecording}
           >
-            <Feather name="square" size={24} color="#0B1009" />
+            <Feather name="square" size={24} color="white" />
           </TouchableOpacity>
         </View>
       ) : (
@@ -557,7 +561,6 @@ const QuestionScreen = ({ onBack, onComplete }: QuestionScreenProps) => {
         </View>
       ) : (
         <View style={styles.photoButtonContainer}>
-          <Text style={styles.photoButtonLabel}>Ajouter une photo</Text>
           <View style={styles.photoButtonsRow}>
             {/* <TouchableOpacity 
               style={styles.photoButton}
@@ -572,7 +575,7 @@ const QuestionScreen = ({ onBack, onComplete }: QuestionScreenProps) => {
               onPress={handleChoosePhoto}
             >
               <Feather name="image" size={24} color="#0B1009" />
-              <Text style={styles.photoButtonText}>Choisir une image</Text>
+              <Text style={styles.photoButtonText}>Ajouter une photo</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -644,7 +647,7 @@ const QuestionScreen = ({ onBack, onComplete }: QuestionScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F0E5',
+    backgroundColor: 'white',
   },
   header: {
     flexDirection: 'row',
@@ -731,11 +734,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 'auto',
+    alignItems: 'center',
   },
   answerButton: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#FEFBF4',
     borderWidth: 1,
     borderColor: '#0B1009',
@@ -761,8 +766,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFEFC4',
   },
   answerText: {
-    marginLeft: 11,
-    fontSize: 22,
+    marginLeft: 14,
+    fontSize: 20,
     color: '#0B1009',
     fontFamily: Platform.OS === 'ios' ? 'Inter' : 'sans-serif',
   },
@@ -776,13 +781,13 @@ const styles = StyleSheet.create({
   },
   multipleChoiceButton: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: 'center', 
+    justifyContent: 'flex-start',
     backgroundColor: '#FEFBF4',
     borderWidth: 1,
     borderColor: '#0B1009',
     borderRadius: 8,
-    padding: 20,
+    padding: 28,
     marginBottom: 16,
     minHeight: 88,
   },
@@ -895,7 +900,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   recordingActive: {
-    backgroundColor: '#FF6B6B',
+    backgroundColor: 'black',
   },
   audioSubmitButton: {
     backgroundColor: '#FFC629',
@@ -917,8 +922,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 150,
-    padding: 22,
+    marginTop: 100,
+    padding: 40,
   },
   photoButtonContainer: {
     alignItems: 'center',
@@ -965,8 +970,8 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   photoPreview: {
-    width: 200,
-    height: 200,
+    width: 250,
+    height: 250,
     borderRadius: 8,
     backgroundColor: '#F1E5D5',
     justifyContent: 'center',

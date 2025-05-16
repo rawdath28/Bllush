@@ -236,8 +236,8 @@ const styles = StyleSheet.create({
   },
   matchBadge: {
     position: 'absolute',
-    width: 60,
-    height: 60,
+    width: 80.23,
+    height: 83.78,
     borderRadius: 30,
     justifyContent: 'center',
     alignItems: 'center',

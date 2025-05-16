@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather } from '@expo/vector-icons';
-import QuestionScreen from './QuestionScreen';
 
 type HomeScreenProps = {
   onStartQuestions: () => void;
@@ -19,7 +18,7 @@ type HomeScreenProps = {
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ onStartQuestions, onStartValidationResponse }) => {
   return (
-    <View style={styles.container}>
+    <View style={styles.container}>      
       <StatusBar barStyle="dark-content" />
 
       {/* Header */}
@@ -45,44 +44,36 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartQuestions, onStartValida
       </View>
 
       {/* Main Content */}
-      <View style={styles.mainContainer}>
-        {/* Circle Illustration */}
-        <View style={styles.illustrationContainer}>
-          <Image
-            source={require('../assets/images/Simplification.png')}
-            style={styles.illustration}
-            resizeMode="contain"
-          />
-        </View>
+      <View style={styles.contentWrapper}>
+        <View style={styles.mainContainer}>
+          <View style={styles.contentTop}>
+            {/* Illustration */}
+            <Image
+              source={require('../assets/images/home-illustration.svg')}
+              style={styles.illustration}
+              resizeMode="contain"
+            />
+            
+            {/* Text Content */}
+            <View style={styles.textContainer}>
+              <Text style={styles.title}>C'est l'heure !</Text>
+              <Text style={styles.subtitle}>
+                5 questions. 2 minutes. 1 chance de matcher.
+              </Text>
+            </View>
+          </View>
 
-        {/* Text Content */}
-        <View style={styles.textContainer}>
-          <Text style={styles.title}>C'est l'heure !</Text>
-          <Text style={styles.subtitle}>
-            5 questions. 2 minutes. 1 chance de matcher.
-          </Text>
-        </View>
-
-        {/* Start Button */}
-        <TouchableOpacity 
-          style={styles.startButton} 
-          onPress={() => {
-            console.log('Je commence button pressed');
-            onStartQuestions();
-          }}
-        >
-          <Text style={styles.startButtonText}>Je commence</Text>
-        </TouchableOpacity>
-        
-        {/* Test button for validation - Only in development */}
-        {/* {onStartValidationResponse && (
+          {/* Start Button */}
           <TouchableOpacity 
-            style={[styles.startButton, styles.testButton]} 
-            onPress={onStartValidationResponse}
+            style={styles.startButton} 
+            onPress={() => {
+              console.log('Je commence button pressed');
+              onStartQuestions();
+            }}
           >
-            <Text style={styles.startButtonText}>Tester Validation</Text>
+            <Text style={styles.startButtonText}>Je commence</Text>
           </TouchableOpacity>
-        )} */}
+        </View>
       </View>
     </View>
   );
@@ -91,19 +82,21 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ onStartQuestions, onStartValida
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F0E5',
+    backgroundColor: '#FFFFFF',
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: 16,
     paddingVertical: 16,
     paddingTop: Platform.OS === 'ios' ? 50 : 16,
   },
   logoContainer: {
     height: 40,
+    width: 40,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   logo: {
     width: 27,
@@ -119,29 +112,31 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  mainContainer: {
+  contentWrapper: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  mainContainer: {
+    width: 337,
     backgroundColor: '#FEFBF4',
-    margin: 16,
     borderRadius: 12,
-    padding: 20,
+    padding: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 80,
   },
-  illustrationContainer: {
-    width: 200,
-    height: 200,
-    marginBottom: 40,
+  contentTop: {
+    alignItems: 'center',
+    marginBottom: 22,
   },
   illustration: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 12,
+    width: 200,
+    height: 200,
+    marginBottom: 42,
   },
   textContainer: {
     alignItems: 'center',
-    marginBottom: 40,
   },
   title: {
     fontFamily: Platform.OS === 'ios' ? 'Inter' : 'sans-serif',
@@ -171,10 +166,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: 'white',
-  },
-  testButton: {
-    marginTop: 12,
-    backgroundColor: '#FFC629',
   },
 });
 
